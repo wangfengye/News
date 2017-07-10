@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     private void initData() {
-        data = new ArrayList<ResultsBean>();
+        data = new ArrayList<>();
         adapter = new MyAdapter(data, this);
 
     }
@@ -77,6 +77,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<ArrayList<ResultsBean>> loader, ArrayList<ResultsBean> data) {
+        if (data.size() <= 0) {
+            Toast.makeText(this, R.string.refresh_error, Toast.LENGTH_SHORT).show();
+        }
         this.data.clear();
         this.data.addAll(data);
         adapter.notifyDataSetChanged();

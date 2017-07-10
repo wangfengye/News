@@ -6,27 +6,10 @@ package com.ascend.wangfeng.news.bean;
  */
 
 public class ResultsBean {
-    private String id;
-    private String type;
-    private String sectionId;
     private String sectionName;
     private String webPublicationDate;
     private String webTitle;
     private String webUrl;
-    private String apiUrl;
-    private boolean isHosted;
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public void setSectionId(String sectionId) {
-        this.sectionId = sectionId;
-    }
 
     public String getSectionName() {
         return sectionName;
@@ -59,15 +42,4 @@ public class ResultsBean {
     public void setWebUrl(String webUrl) {
         this.webUrl = webUrl;
     }
-
-
-    public void setApiUrl(String apiUrl) {
-        this.apiUrl = apiUrl;
-    }
-
-
-    public void setIsHosted(boolean isHosted) {
-        this.isHosted = isHosted;
-    }
-
 }
