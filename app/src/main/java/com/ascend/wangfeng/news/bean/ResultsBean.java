@@ -16,24 +16,12 @@ public class ResultsBean {
     private String apiUrl;
     private boolean isHosted;
 
-    public String getId() {
-        return id;
-    }
-
     public void setId(String id) {
         this.id = id;
     }
 
-    public String getType() {
-        return type;
-    }
-
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getSectionId() {
-        return sectionId;
     }
 
     public void setSectionId(String sectionId) {
@@ -72,34 +60,14 @@ public class ResultsBean {
         this.webUrl = webUrl;
     }
 
-    public String getApiUrl() {
-        return apiUrl;
-    }
 
     public void setApiUrl(String apiUrl) {
         this.apiUrl = apiUrl;
     }
 
-    public boolean isIsHosted() {
-        return isHosted;
-    }
 
     public void setIsHosted(boolean isHosted) {
         this.isHosted = isHosted;
     }
 
-    @Override
-    public String toString() {
-        return "ResultsBean{" +
-                "id='" + id + '\'' +
-                ", type='" + type + '\'' +
-                ", sectionId='" + sectionId + '\'' +
-                ", sectionName='" + sectionName + '\'' +
-                ", webPublicationDate='" + webPublicationDate + '\'' +
-                ", webTitle='" + webTitle + '\'' +
-                ", webUrl='" + webUrl + '\'' +
-                ", apiUrl='" + apiUrl + '\'' +
-                ", isHosted=" + isHosted +
-                '}';
-    }
 }
