@@ -1,12 +1,13 @@
 package com.ascend.wangfeng.news.util;
 
+import android.net.Uri;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 
@@ -16,19 +17,22 @@ import java.util.Map;
  */
 
 public class HttpClient {
-    public static final String BASE_URL="http://content.guardianapis.com/";
-    public static final String API_KEY="test";
+    private static final String BASE_URL="content.guardianapis.com";
+    private static final String API_KEY="test";
     private HttpURLConnection connection =null;
     public String creatConnection(String urlString, Map<String,String> map){
         String responseBody = null;//响应体
-        String urlFull = BASE_URL+urlString+"?";
+        Uri.Builder urlFull =new Uri.Builder();
+        urlFull.scheme("http")
+                .authority(BASE_URL)
+                .appendPath(urlString);
+
         for (Map.Entry<String, String> entry :
                 map.entrySet()) {
-            urlFull = urlFull + entry.getKey() + "=" + entry.getValue()+"&";
+           urlFull.appendQueryParameter(entry.getKey(),entry.getValue());
         }
         try {
-            URL url = new URL(urlFull);
-
+            URL url = new URL(urlFull.build().toString());
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestProperty("Content-type", "application/x-java-serialized-object");
             connection.connect();
@@ -38,9 +42,7 @@ public class HttpClient {
                 responseBody =null;
             }
 
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        }  catch (IOException e) {
             e.printStackTrace();
         }finally {
             if (connection!=null)connection.disconnect();
@@ -54,8 +56,8 @@ public class HttpClient {
         ByteArrayOutputStream baos =new ByteArrayOutputStream();
         BufferedOutputStream bos = new BufferedOutputStream(baos);
         byte[] buffer =new byte[1024*8];
-        int length =0;
-        byte[] bytes=null;
+        int length ;
+        byte[] bytes;
         try {
             while( (length=bis.read(buffer))>0){
                 bos.write(buffer,0,length);
@@ -66,8 +68,6 @@ public class HttpClient {
             bos.close();
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
-
         }
         return result;
     }

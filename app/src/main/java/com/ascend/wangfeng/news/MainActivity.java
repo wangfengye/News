@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,9 +21,12 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<ArrayList<ResultsBean>> {
 
     public static final int LOADER_ID = 1;
+    public static final String TAG = MainActivity.class.getName();
     private ArrayList<ResultsBean> data;
     private MyAdapter adapter;
     private ListView listView;
+    private int count;
+    private Loader<ArrayList<ResultsBean>> loader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +34,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         setContentView(R.layout.activity_main);
         initData();
         initView();
-        getSupportLoaderManager().initLoader(LOADER_ID, null, this).forceLoad();
+
     }
 
+    @Override
+    protected void onResume() {
+        loader=getSupportLoaderManager().initLoader(LOADER_ID, null, this);
+        loader.forceLoad();
+        super.onResume();
+    }
 
     private void initView() {
         listView = (ListView) findViewById(R.id.list);
@@ -64,8 +74,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        getSupportLoaderManager().initLoader(LOADER_ID, null, this).forceLoad();//refresh data
         Toast.makeText(this, R.string.refreshing, Toast.LENGTH_SHORT).show();
+        if (loader!=null)
+        loader.forceLoad();//refresh data
         return super.onOptionsItemSelected(item);
     }
 
@@ -79,10 +90,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onLoadFinished(Loader<ArrayList<ResultsBean>> loader, ArrayList<ResultsBean> data) {
         if (data.size() <= 0) {
             Toast.makeText(this, R.string.refresh_error, Toast.LENGTH_SHORT).show();
+            return;
         }
         this.data.clear();
         this.data.addAll(data);
         adapter.notifyDataSetChanged();
+        Log.i(TAG, "onLoadFinished: "+count);
+        count++;
         Toast.makeText(this, R.string.refersh_success, Toast.LENGTH_SHORT).show();
     }
 
